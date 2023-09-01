@@ -29,8 +29,17 @@ def home():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    # handle login
-    pass
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+        if user and user.password == password:
+            login_user(user)
+            return redirect(url_for('home'))
+        else:
+            flash('Invalid credentials')
+            return render_template('login.html')
+    return render_template('login.html')
 
 
 @app.route("/logout")
@@ -42,8 +51,20 @@ def logout():
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-    # handle signup
-    pass
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+        if user:
+            flash('Username already taken')
+            return render_template('signup.html')
+        else:
+            new_user = User(username=username, password=password)
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+            return redirect(url_for('home'))
+    return render_template('signup.html')
 
 
 @app.route("/profile/<username>")
