@@ -46,13 +46,13 @@ def profile(username):
 def post():
     # handle new post
     pass
-
+```python
 def load_and_parse_md(filename):
     with open(os.path.join('pages', filename)) as f:
         markdown_content = f.read()
     html_content = mistune.markdown(markdown_content)
     return html_content
-
+```
 @app.route('/page/<filename>')
 def page(filename):
     html_content = load_and_parse_md(filename)
