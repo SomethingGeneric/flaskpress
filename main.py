@@ -72,6 +72,7 @@ def signup():
 def profile(username):
     return render_template("profile.html", username=username)
 
+
 @app.route("/create_page", methods=["GET", "POST"])
 @login_required
 def create_page():
