@@ -55,16 +55,23 @@ def profile(username):
 @app.route("/post", methods=["GET", "POST"])
 @login_required
 def post():
-    filename = (
-        request.form.get("filename")
-        or request.form.get("post_name")
-        or f"{time.time()}.md"
-    )
-    if not os.path.exists("pages"):
-        os.makedirs("pages")
-    with open(os.path.join("pages", filename), "w") as f:
-        f.write(request.form.get("markdown"))
-    return redirect(url_for("page", filename=filename))
+    if request.method == 'GET':
+        posts = []
+        for filename in os.listdir('pages'):
+            with open(os.path.join('pages', filename), 'r') as f:
+                posts.append(f.read())
+        return render_template('posts.html', posts=posts)
+    elif request.method == 'POST':
+        filename = (
+            request.form.get("filename")
+            or request.form.get("post_name")
+            or f"{time.time()}.md"
+        )
+        if not os.path.exists("pages"):
+            os.makedirs("pages")
+        with open(os.path.join("pages", filename), "w") as f:
+            f.write(request.form.get("markdown"))
+        return redirect(url_for("page", filename=filename))
 
 
 def load_and_parse_md(filename):
