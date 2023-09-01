@@ -29,17 +29,17 @@ def home():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
         user = User.query.filter_by(username=username).first()
         if user and user.password == password:
             login_user(user)
-            return redirect(url_for('home'))
+            return redirect(url_for("home"))
         else:
-            flash('Invalid credentials')
-            return render_template('login.html')
-    return render_template('login.html')
+            flash("Invalid credentials")
+            return render_template("login.html")
+    return render_template("login.html")
 
 
 @app.route("/logout")
@@ -51,20 +51,20 @@ def logout():
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
         user = User.query.filter_by(username=username).first()
         if user:
-            flash('Username already taken')
-            return render_template('signup.html')
+            flash("Username already taken")
+            return render_template("signup.html")
         else:
             new_user = User(username=username, password=password)
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user)
-            return redirect(url_for('home'))
-    return render_template('signup.html')
+            return redirect(url_for("home"))
+    return render_template("signup.html")
 
 
 @app.route("/profile/<username>")
@@ -76,12 +76,12 @@ def profile(username):
 @app.route("/post", methods=["GET", "POST"])
 @login_required
 def post():
-    if request.method == 'GET':
+    if request.method == "GET":
         posts = []
-        for filename in os.listdir('pages'):
-            with open(os.path.join('pages', filename), 'r') as f:
+        for filename in os.listdir("pages"):
+            with open(os.path.join("pages", filename), "r") as f:
                 posts.append(f.read())
-        return render_template('posts.html', posts=posts)
+        return render_template("posts.html", posts=posts)
     else:
         filename = (
             request.form.get("filename")
