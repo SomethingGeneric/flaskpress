@@ -24,6 +24,9 @@ jobs:
       id: git-check
       run: |
         git diff --exit-code || echo "::set-output name=changed::true"
+    - name: Set GH_TOKEN
+      run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+    
     - name: Commit and create PR if changes
       if: steps.git-check.outputs.changed == 'true'
       run: |
