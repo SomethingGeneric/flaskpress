@@ -35,5 +35,6 @@ jobs:
       uses: peter-evans/create-pull-request@v5
       env:
         commit-message: "Formatted code with black"
-        branch: code-formatter-brr/lol
+        branch: "code-formatter-brr/lol"
+        base: ${{ github.head_ref }}
     
