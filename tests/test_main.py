@@ -25,3 +25,6 @@ def test_dynamic_route():
     
     # Assert
     assert response.data.decode() == expected_html
+
+if __name__ == "__main__":
+    unittest.main()
