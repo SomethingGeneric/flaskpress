@@ -5,12 +5,14 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python 3.11
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: 3.11
 
@@ -22,3 +24,16 @@ jobs:
 
     - name: Run tests
       run: python -m unittest
+
+    - name: Check for changes
+      id: git-check
+      run: |
+        git diff --exit-code || echo "::set-output name=changed::true"
+    
+    - name: Commit and create PR if changes
+      if: steps.git-check.outputs.changed == 'true'
+      uses: peter-evans/create-pull-request@v5
+      env:
+        commit-message: "Formatted code with black"
+        branch: code-formatter-brr/lol
+    
