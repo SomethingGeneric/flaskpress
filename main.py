@@ -77,19 +77,21 @@ def profile(username):
 @login_required
 def post():
     if request.method == 'GET':
+        if not os.path.exists('pages'):
+            os.makedirs('pages')
         posts = []
         for filename in os.listdir('pages'):
             with open(os.path.join('pages', filename), 'r') as f:
                 posts.append(f.read())
         return render_template('posts.html', posts=posts)
     elif request.method == 'POST':
+        if not os.path.exists('pages'):
+            os.makedirs('pages')
         filename = (
             request.form.get("filename")
             or request.form.get("post_name")
             or f"{time.time()}.md"
         )
-        if not os.path.exists("pages"):
-            os.makedirs("pages")
         with open(os.path.join("pages", filename), "w") as f:
             f.write(request.form.get("markdown"))
         return redirect(url_for("page", filename=filename))
