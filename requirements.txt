@@ -2,5 +2,6 @@ Flask
 Flask-Login
 flask[async]
 Mistune
+Flask-SQLAlchemy
 SQLAlchemy
 black
