@@ -34,7 +34,9 @@ jobs:
       run: |
         git config --global user.name 'GitHub Action'
         git config --global user.email 'action@github.com'
+        git checkout -b formatter
         git commit -am "Apply black formatting"
+        git push -u origin/formatter
         gh pr create --title "Apply black formatting" --body "This PR applies black formatting to the codebase." --base main
     - name: Run tests
       run: python -m unittest
