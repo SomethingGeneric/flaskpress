@@ -22,19 +22,18 @@ jobs:
     - name: Format code
       run: black .
 
+    - name: Run tests
+      run: python -m unittest
+
     - name: Check for changes
       id: git-check
       run: |
         git diff --exit-code || echo "::set-output name=changed::true"
+    
     - name: Commit and create PR if changes
       if: steps.git-check.outputs.changed == 'true'
-      run: |
-        git config --global user.name 'GitHub Action'
-        git config --global user.email 'action@github.com'
-        git remote set-url origin git@github.com:SomethingGeneric/flaskpress.git
-        git checkout -b formatter
-        git commit -am "Apply black formatting"
-        git push -u origin formatter
-        gh pr create --title "Apply black formatting" --body "This PR applies black formatting to the codebase." --base main
-    - name: Run tests
-      run: python -m unittest
+      uses: peter-evans/create-pull-request@v5
+      env:
+        commit-message: "Formatted code with black"
+        branch: code-formatter-brr/lol
+    
