@@ -48,12 +48,11 @@ def profile(username):
 @app.route('/post', methods=['GET', 'POST'])
 @login_required
 def post():
-    markdown_text = request.form.get('markdown')
-    filename = f"{time.time()}.md"
+    filename = request.form.get('filename') or request.form.get('post_name') or f"{time.time()}.md"
     if not os.path.exists('pages'):
         os.makedirs('pages')
     with open(os.path.join('pages', filename), 'w') as f:
-        f.write(markdown_text)
+        f.write(request.form.get('markdown'))
     return redirect(url_for('page', filename=filename))
 
 def load_and_parse_md(filename):
