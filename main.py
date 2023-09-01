@@ -72,6 +72,19 @@ def signup():
 def profile(username):
     return render_template("profile.html", username=username)
 
+@app.route("/create_page", methods=["GET", "POST"])
+@login_required
+def create_page():
+    if request.method == "GET":
+        return render_template("create_page.html")
+    elif request.method == "POST":
+        filename = request.form.get("filename") or f"{time.time()}.md"
+        if not os.path.exists("pages"):
+            os.makedirs("pages")
+        with open(os.path.join("pages", filename), "w") as f:
+            f.write(request.form.get("markdown"))
+        return redirect(url_for("page", filename=filename))
+
 
 @app.route("/post", methods=["GET", "POST"])
 @login_required
