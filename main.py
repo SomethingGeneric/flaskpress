@@ -1,6 +1,8 @@
 from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required
+import os
+import mistune
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
@@ -44,6 +46,17 @@ def profile(username):
 def post():
     # handle new post
     pass
+```python
+def load_and_parse_md(filename):
+    with open(os.path.join('pages', filename)) as f:
+        markdown_content = f.read()
+    html_content = mistune.markdown(markdown_content)
+    return html_content
+```
+@app.route('/page/<filename>')
+def page(filename):
+    html_content = load_and_parse_md(filename)
+    return html_content
 
 if __name__ == "__main__":
     app.run(debug=True)
