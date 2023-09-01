@@ -2,3 +2,4 @@ Flask
 Flask-Login
 flask[async]
 Mistune
+black
