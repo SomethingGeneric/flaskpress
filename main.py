@@ -1,8 +1,9 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required
 import os
 import mistune
+import time
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
@@ -47,8 +48,13 @@ def profile(username):
 @app.route('/post', methods=['GET', 'POST'])
 @login_required
 def post():
-    # handle new post
-    pass
+    markdown_text = request.form.get('markdown')
+    filename = f"{time.time()}.md"
+    if not os.path.exists('pages'):
+        os.makedirs('pages')
+    with open(os.path.join('pages', filename), 'w') as f:
+        f.write(markdown_text)
+    return redirect(url_for('page', filename=filename))
 
 def load_and_parse_md(filename):
     with open(os.path.join('pages', filename)) as f:
