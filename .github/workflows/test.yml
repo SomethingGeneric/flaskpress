@@ -20,5 +20,16 @@ jobs:
     - name: Format code
       run: black .
 
+    - name: Check for changes
+      id: git-check
+      run: |
+        git diff --exit-code || echo "::set-output name=changed::true"
+    - name: Commit and create PR if changes
+      if: steps.git-check.outputs.changed == 'true'
+      run: |
+        git config --global user.name 'GitHub Action'
+        git config --global user.email 'action@github.com'
+        git commit -am "Apply black formatting"
+        gh pr create --title "Apply black formatting" --body "This PR applies black formatting to the codebase." --base main
     - name: Run tests
       run: python -m unittest
