@@ -4,8 +4,17 @@
     <title>User Profile</title>
 </head>
 <body>
+    <img src="{{ user.profile_picture_url }}" alt="Profile Picture">
     <section>
         <h1>{{ user.username }}</h1>
+    </section>
+    <section>
+        <h2>Email</h2>
+        <p>{{ user.email }}</p>
+    </section>
+    <section>
+        <h2>Date of Registration</h2>
+        <p>{{ user.date_of_registration }}</p>
     </section>
     <section>
         {% for post in user.posts %}
