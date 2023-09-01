@@ -20,6 +20,7 @@ if not os.path.exists("pages"):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), unique=True)
