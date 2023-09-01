@@ -1,0 +1,14 @@
+gha_enabled: True
+branch: main
+# blocked_dirs: [".github/", "other_dir"]
+draft: False
+description: "flaskpress is a python 3.11+ project using flask and other supporting libraries to replicate a similar experience to wordpress"
+docs:
+  - Flask: ["https://flask.palletsprojects.com/en/2.3.x/", "Flask is the web framework being used"]
+  - Flask-Login: ["https://flask-login.readthedocs.io/en/latest/", "Flask-Login supplements flask by making user authentication and token management easier"]
+  - Mistune: ["https://mistune.lepture.com/en/latest/api.html", "Mistune is an extendable markdown rendering package for python"]
+sandbox:
+  enabled: true
+  image: "Python3"
+  install: "python -m venv venv; . venv/bin/activate; pip install black"
+  formatter: ". venv/bin/activate; black {files}"
